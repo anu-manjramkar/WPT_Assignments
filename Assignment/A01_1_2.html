@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A01_2</title>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            let emparray = [];
+            emparray.push({ empno: 1, empname: "a", email: "a@.com", deptid: 1 });
+            emparray.push({ empno: 2, empname: "b", email: "b@.com", deptid: 2 });
+            emparray.push({ empno: 3, empname: "c", email: "c@.com", deptid: 2 });
+            emparray.push({ empno: 4, empname: "d", email: "d@.com", deptid: 1 });
+
+            function isFound(empno) {
+                found = false;
+                for (let i = 0; i < emparray.length; i++) {
+                    if (emparray[i].empno == empno) {
+                        found = true;
+                        break;
+                    }
+                }
+                return found;
+            }
+            
+           
+            let empno = document.querySelector("#empno");
+            empno.addEventListener('blur', () => {
+                let result = isFound(empno.value);
+                if (result) {
+                    document.querySelector("#add").disabled = true;
+                    document.querySelector("#modify").disabled = false;
+                    document.querySelector("#remove").disabled = false;
+                    document.querySelector("#viewall").disabled = false;
+                    document.querySelector("#viewondeptid").disabled = false;
+                }
+                else {
+                    document.querySelector("#add").disabled = false;
+                    document.querySelector("#modify").disabled = true;
+                    document.querySelector("#remove").disabled = true;
+                    document.querySelector("#viewall").disabled = false;
+                    document.querySelector("#viewondeptid").disabled = false;
+                }
+
+
+            });
+            let msg1 = document.querySelector("#viewall");
+            msg1.addEventListener('click', () => {
+                    let out = [];
+                    for (let i = 0; i < emparray.length; i++) {
+                        out[i] = "[ " + emparray[i].empno +" " +emparray[i].empname +" " +emparray[i].email + " " +emparray[i].deptid + "]";
+                    }
+                    document.querySelector("#msg1").innerHTML = out ;
+                });
+    
+
+            let add1 = document.querySelector("#add");
+            add1.addEventListener('click', () => {
+                let empno = parseInt(document.querySelector("#empno").value);
+                let empname = document.querySelector("#empname").value;
+                let email = document.querySelector("#email").value;
+                let deptid = parseInt(document.querySelector("#deptid").value);
+                // console.log(num);
+                let obj = { empno, empname, email, deptid };
+                emparray.push(obj);
+                console.log(emparray);
+                document.querySelector("#add").disabled = true;
+                document.querySelector("#msg").innerHTML = "Employee is Added Successfully";
+                document.querySelector("#viewall").disabled = false;
+            });
+
+            let remove = document.querySelector("#remove");
+            remove.addEventListener('click', () => {
+
+                for (let i = 0; i < emparray.length; i++) {
+                    if (emparray[i].empno == document.querySelector("#empno").value) {
+                        emparray.splice(i, 1);
+                        break;
+                    }
+                }
+                document.querySelector("#empname").value = "";
+                document.querySelector("#email").value = "";
+                document.querySelector("#deptid").value = "";
+                console.log(emparray);
+                document.querySelector("#msg").innerHTML = "Employee details is Deleted Successfully";
+                
+
+            });
+            let modify = document.querySelector("#modify");
+            modify.addEventListener('click', () => {
+                for (let i = 0; i < emparray.length; i++) {
+                    if (emparray[i].empno == parseInt(document.querySelector("#empno").value)) {
+                        emparray[i].empname = document.querySelector("#empname").value;
+                        emparray[i].email = document.querySelector("#email").value;
+                        emparray[i].deptid = document.querySelector("#deptid").value;
+                        break;
+                    }
+                }
+
+                document.querySelector("#msg").innerHTML = "Employee Details Modified Successfully";
+
+                
+
+            });
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <br>
+    <input type="text" id="empno" placeholder="Enter Employee No.">
+    <span id="msg">Status will be Displayed Here</span><br><br>
+    <input type="text" id="empname" placeholder="Enter Employee Name"><br><br>
+    <input type="text" id="email" placeholder="Enter Employee Email"><br><br>
+    <input type="text" id="deptid" placeholder="Enter Department ID"><br><br>
+    <input type="button" id="add" value="Add" disabled>
+    <input type="button" id="modify" value="Modify" disabled>
+    <input type="button" id="remove" value="Remove" disabled>
+    <input type="button" id="viewall" value="View All" disabled>
+    <input type="button" id="viewondeptid" value="View on Dept. ID" disabled><br>
+    <hr>
+    <span id="msg1"></span>
+</body>
+
+</html>

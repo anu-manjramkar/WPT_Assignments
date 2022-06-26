@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        $(()=>{
+            $("#pin").blur(()=>{
+                let i= $("#pin");
+                let input={pin:i.val()};
+                let params={
+                    data:input,
+                    url:"http://localhost:358/pin",
+                    type:'get',
+                    dataType:"json",
+                    success:(datagivenbyserver)=>{
+                        console.log("Data given by Server "+ datagivenbyserver.status);
+                        if(datagivenbyserver.status===true){
+                            $("#area").val(datagivenbyserver.areadetails.area);
+                            $("#msg").text("Details Found");
+                        }
+                        else{
+                            $("#area").val("");
+                            $("#msg").text("Details Not Found");
+                        }
+                    },error:(errorgivenbyserver)=>{
+                        console.log("Error Given by Serever "+ errorgivenbyserver);
+                    }
+
+                };
+                $.ajax(params);
+
+
+            });
+
+        });
+
+
+    </script>
+</head>
+<body>
+    <br><br>
+    <input type="text" id="pin" placeholder="Enter PIN Code">
+    <span id="msg">Message will be Displayed here</span><br><br>
+    <input type="text" id="area" placeholder="Enter Area">
+</body>
+</html>
